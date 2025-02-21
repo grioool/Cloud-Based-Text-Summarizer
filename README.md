@@ -22,6 +22,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 * Guest -	Can summarize a limited number of documents per day. No saved history.
 * Registered User -	Stores history and supports file downloads.
 * Premium User - Unlimited summarization.
+* Enterprise User - Highload summarization with prioritization.
 * Admin -	Monitors system performance, API usage, billing and access control.
 
 ## Milestones
@@ -43,3 +44,222 @@ The summarization service leverages Gemini to extract key points, making it idea
 1. App that can take text and give back summary 
 2. App that can take pdf and give back summary in pdf (Basic version)
 3. App that you can use to browse the scientific files in internet and then get theirs summary
+
+---
+
+# API design 
+
+## API Overview
+- **Base URL:** `https://api.summarize.me/v1/`
+- **Authentication:** Bearer Token 
+- **Rate Limiting:** Based on user role (Guest/Registered, Premium, Enterprise)
+- **Response Format:** JSON (`application/json`)
+- **Status Codes:**  
+  - `200 OK` → Success  
+  - `400 Bad Request` → Invalid Request  
+  - `401 Unauthorized` → Authentication Required  
+  - `403 Forbidden` → Insufficient Permission  
+  - `500 Internal Server Error` → Unexpected Error  
+
+---
+
+## API Endpoints
+### Upload Document
+- **Endpoint:** `POST /upload`
+- **Description:** Allows users to upload documents for summarization.
+- **Headers:**
+  ```http
+  Authorization: Bearer {access_token}
+  Content-Type: multipart/form-data
+  ```
+- **Request:**
+  ```multipart/form-data
+  file: {PDF/TXT file}
+  summary_length: "short" | "medium" | "long"
+  language: "auto" | "en" | "pl" | "ru" | "de"
+  ```
+- **Response:**
+  ```json
+  {
+    "file_id": "abc123",
+    "status": "processing",
+    "message": "File uploaded successfully"
+  }
+  ```
+
+---
+
+### Process Summarization
+- **Endpoint:** `POST /summarize/{file_id}`
+- **Description:** Starts the summarization process for an uploaded file.
+- **Headers:**
+  ```http
+  Authorization: Bearer {access_token}
+  ```
+- **Response:**
+  ```json
+  {
+    "file_id": "abc123",
+    "status": "processing",
+    "estimated_time": "30s"
+  }
+  ```
+
+---
+
+### Get Summary
+- **Endpoint:** `GET /summary/{file_id}`
+- **Description:** Retrieves the generated summary for a processed document.
+- **Headers:**
+  ```http
+  Authorization: Bearer {access_token}
+  ```
+- **Response (If Ready):**
+  ```json
+  {
+    "file_id": "abc123",
+    "status": "completed",
+    "summary": "This is a summarized version of the document...",
+    "word_count_reduction": "75%"
+  }
+  ```
+- **Response (If Still Processing):**
+  ```json
+  {
+    "file_id": "abc123",
+    "status": "processing",
+    "message": "Your summary is still being processed."
+  }
+  ```
+
+---
+
+### Download as PDF, TXT, or DOCX
+- **Endpoint:** `GET /summary/{file_id}/download`
+- **Description:** Allows users to download the summary in different formats.
+- **Headers:**
+  ```http
+  Authorization: Bearer {access_token}
+  ```
+- **Query Params:**
+  ```
+  format = "pdf" | "txt" | "docx"
+  ```
+- **Response:**
+  ```
+  Content-Disposition: attachment; filename="summary.pdf"
+  Content-Type: application/pdf
+  ```
+
+---
+
+### Get Processing Status
+- **Endpoint:** `GET /status/{file_id}`
+- **Description:** Provides the current status of the document.
+- **Headers:**
+  ```http
+  Authorization: Bearer {access_token}
+  ```
+- **Response:**
+  ```json
+  {
+    "file_id": "abc123",
+    "status": "processing",
+    "progress": "80%"
+  }
+  ```
+
+---
+
+### Get User Summarization History
+- **Endpoint:** `GET /user/history`
+- **Description:** Returns a list of processed summaries for a user.
+- **Headers:**
+  ```http
+  Authorization: Bearer {access_token}
+  ```
+- **Response:**
+  ```json
+  {
+    "user_id": "user_789",
+    "history": [
+      {
+        "file_id": "abc123",
+        "filename": "report.pdf",
+        "summary_length": "medium",
+        "date": "2025-02-21",
+        "status": "completed"
+      },
+      {
+        "file_id": "xyz456",
+        "filename": "thesis.txt",
+        "summary_length": "long",
+        "date": "2025-02-18",
+        "status": "failed"
+      }
+    ]
+  }
+  ```
+
+---
+
+### Authentication
+- **Endpoint:** `POST /auth/login`
+- **Description:** User authentication.
+- **Request:**
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "securepassword"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "access_token": "eyJhbGciOiJIUzI1...",
+    "expires_in": 3600
+  }
+  ```
+
+### Refresh Token
+- **Endpoint:** `POST /auth/refresh`
+- **Description:** Refreshes the user's access token.
+- **Response:**
+  ```json
+  {
+    "access_token": "new_access_token",
+    "expires_in": 3600
+  }
+  ```
+
+---
+
+### Admin API - Get System Analytics
+- **Endpoint:** `GET /admin/analytics`
+- **Description:** Provides insights on system performance & user activity.
+- **Headers:**
+  ```http
+  Authorization: Bearer {admin_token}
+  ```
+- **Response:**
+  ```json
+  {
+    "total_summaries": 12500,
+    "active_users": 3500
+  }
+  ```
+
+
+## Rate Limits
+| Plan | Max Requests/Minute | Max File Size |
+|------|---------------------|--------------|
+| Guest/Registered | 5 | 5MB |
+| Premium | 50 | 50MB |
+| Enterprise | 200 | 500MB |
+
+---
+
+## Security Measures
+- **OAuth2 / Firebase Authentication** for API access.
+- **IAM Roles** restrict API access for different user levels.
+
