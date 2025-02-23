@@ -181,6 +181,23 @@ The summarization service leverages Gemini to extract key points, making it idea
 ---
 
 ### Authentication
+- **Endpoint:** `POST /auth/registration`
+- **Description:** User registration.
+- **Request:**
+  ```json
+  {
+    "email": "user@example.com",
+    "username": "user@example.com",
+    "password": "securepassword"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "access_token": "eyJhbGciOiJIUzI1..."
+  }
+  ```
+
 - **Endpoint:** `POST /auth/login`
 - **Description:** User authentication.
 - **Request:**
