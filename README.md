@@ -32,25 +32,26 @@ The summarization service leverages Gemini to extract key points, making it idea
 * 30.05 M3: Final presentation + live demo
 
 ## Technologies
-1. Backend – Python
-2. Frontend - React
+1. Backend – Python - Google Cloud
+2. Frontend - React - Vercel
 3. AI - Gemini
-4. Cloud Functions – to process text
-5. Google Cloud Storage – to store uploaded pdf files
-6. Stored in GitHub (project + Terraform as modules)
+4. DB - PostgreSQL
+5. Google Cloud Storage – to store pdf files
+6. Stored in GitHub (as submodules - backend + frontend + Terraform)
 7. Diagram - draw.io
 
 ## Versions
-1. App that can take text and give back summary 
-2. App that can take pdf and give back summary in pdf (Basic version)
-3. App that you can use to browse the scientific files in internet and then get theirs summary
+1. App that can take pdf and give back summary (Demo version)
+2. App, where user can upload pdf file, summarize it, check summary status, download summary and check history
+3. App, where user can browse scientific files in internet and then get theirs summary
 
 ---
 
 # API design 
 
 ## API Overview
-- **Base URL:** `https://api.summarize.me/v1/`
+- **Base URL for backend:** `https://cbts-backend-854061077838.europe-central2.run.app`
+- **Base URL for frontend:** ``
 - **Authentication:** Bearer Token 
 - **Rate Limiting:** Based on user role (Guest/Registered, Premium, Enterprise)
 - **Response Format:** JSON (`application/json`)
@@ -75,8 +76,6 @@ The summarization service leverages Gemini to extract key points, making it idea
 - **Request:**
   ```multipart/form-data
   file: {PDF/TXT file}
-  summary_length: "short" | "medium" | "long"
-  language: "auto" | "en" | "pl" | "ru" | "de"
   ```
 - **Response:**
   ```json
@@ -100,8 +99,7 @@ The summarization service leverages Gemini to extract key points, making it idea
   ```json
   {
     "file_id": "abc123",
-    "status": "processing",
-    "estimated_time": "30s"
+    "status": "processing"
   }
   ```
 
@@ -119,8 +117,7 @@ The summarization service leverages Gemini to extract key points, making it idea
   {
     "file_id": "abc123",
     "status": "completed",
-    "summary": "This is a summarized version of the document...",
-    "word_count_reduction": "75%"
+    "summary": "This is a summarized version of the document..."
   }
   ```
 - **Response (If Still Processing):**
@@ -153,24 +150,6 @@ The summarization service leverages Gemini to extract key points, making it idea
 
 ---
 
-### Get Processing Status
-- **Endpoint:** `GET /status/{file_id}`
-- **Description:** Provides the current status of the document.
-- **Headers:**
-  ```http
-  Authorization: Bearer {access_token}
-  ```
-- **Response:**
-  ```json
-  {
-    "file_id": "abc123",
-    "status": "processing",
-    "progress": "80%"
-  }
-  ```
-
----
-
 ### Get User Summarization History
 - **Endpoint:** `GET /user/history`
 - **Description:** Returns a list of processed summaries for a user.
@@ -186,14 +165,12 @@ The summarization service leverages Gemini to extract key points, making it idea
       {
         "file_id": "abc123",
         "filename": "report.pdf",
-        "summary_length": "medium",
         "date": "2025-02-21",
         "status": "completed"
       },
       {
         "file_id": "xyz456",
         "filename": "thesis.txt",
-        "summary_length": "long",
         "date": "2025-02-18",
         "status": "failed"
       }
@@ -216,8 +193,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 - **Response:**
   ```json
   {
-    "access_token": "eyJhbGciOiJIUzI1...",
-    "expires_in": 3600
+    "access_token": "eyJhbGciOiJIUzI1..."
   }
   ```
 
@@ -227,8 +203,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 - **Response:**
   ```json
   {
-    "access_token": "new_access_token",
-    "expires_in": 3600
+    "access_token": "new_access_token"
   }
   ```
 
@@ -251,7 +226,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 
 
 ## Rate Limits
-| Plan | Max Requests/Minute | Max File Size |
+| Plan | Max Number of Summarizations | Max File Size |
 |------|---------------------|--------------|
 | Guest/Registered | 5 | 5MB |
 | Premium | 50 | 50MB |
@@ -261,5 +236,4 @@ The summarization service leverages Gemini to extract key points, making it idea
 
 ## Security Measures
 - **OAuth2 / Firebase Authentication** for API access.
-- **IAM Roles** restrict API access for different user levels.
 
