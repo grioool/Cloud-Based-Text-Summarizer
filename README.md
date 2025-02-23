@@ -51,7 +51,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 
 ## API Overview
 - **Base URL for backend:** `https://cbts-backend-854061077838.europe-central2.run.app`
-- **Base URL for frontend:** ``
+- **Base URL for frontend:** `https://cbts-frontend-lyb0683vk-olgas-projects-7552c87b.vercel.app`
 - **Authentication:** Bearer Token 
 - **Rate Limiting:** Based on user role (Guest/Registered, Premium, Enterprise)
 - **Response Format:** JSON (`application/json`)
