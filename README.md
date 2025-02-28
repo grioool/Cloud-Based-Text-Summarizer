@@ -221,6 +221,23 @@ The summarization service leverages Gemini to extract key points, making it idea
 
 ---
 
-## Security Measures
-- **OAuth2 / Firebase Authentication** for API access.
+# Storage Characteristics 
+## Google Cloud Storage
+- Unstructured (stores summary files)
+- NoSQL (Object storage, not relational)
+- Strong Consistency (for newly written objects)
+- Eventual Consistency (for object listing in large-scale cases)
+- Highly Scalable (Petabytes+)
+- Read & Write (Supports read, write, download and delete operations)
+
+## Google Cloud SQL (PostgreSQL DB)
+- Structured (Relational database with tables, rows, and columns)  
+- SQL (Uses structured query language for querying and managing data)
+- Strong Consistency (Ensures immediate visibility of committed transactions) 
+- Scalable (Supports from small databases to terabytes of data, depending on instance size) 
+- Read & Write (Supports both read and write operations, with role-based access control)
+
+
+# Security Measures
+**OAuth2 / Firebase Authentication** for API access.
 
