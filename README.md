@@ -10,18 +10,20 @@ The summarization service leverages Gemini to extract key points, making it idea
 * Document Upload & Processing
 * AI-Powered Summarization
 * Scalable Real-Time Processing
-* Two ways of explanation
+* Tree ways of explanation (Scientific, Regular, Simple)
+* Tree formats (Short, Long, Bullet Points)
 * Authentication & Role-Based Access
 
 ## Typical Users
 * Scientists
 * Researches
-* Lawyers 
+* Lawyers
+* Students
 
 ## Roles of typical users
 * Guest -	Can summarize a limited number of documents per day. No saved history.
 * Registered User -	Stores history and supports file downloads.
-* Premium User - Unlimited summarization.
+* Premium User - More summarizations.
 * Enterprise User - Highload summarization with prioritization.
 * Admin -	Monitors system performance, API usage, billing and access control.
 
@@ -35,8 +37,8 @@ The summarization service leverages Gemini to extract key points, making it idea
 1. Backend – Python - Google Cloud
 2. Frontend - React - Vercel
 3. AI - Gemini
-4. DB - PostgreSQL
-5. Google Cloud Storage – to store pdf files
+4. DB - PostgreSQL (Google Cloud SQL)
+5. Google Cloud Storage – to store summary files
 6. Stored in GitHub (as submodules - backend + frontend + Terraform)
 7. Diagram - draw.io
 
@@ -65,31 +67,8 @@ The summarization service leverages Gemini to extract key points, making it idea
 ---
 
 ## API Endpoints
-### Upload Document
-- **Endpoint:** `POST /upload`
-- **Description:** Allows users to upload documents for summarization.
-- **Headers:**
-  ```http
-  Authorization: Bearer {access_token}
-  Content-Type: multipart/form-data
-  ```
-- **Request:**
-  ```multipart/form-data
-  file: {PDF/TXT file}
-  ```
-- **Response:**
-  ```json
-  {
-    "file_id": "abc123",
-    "status": "processing",
-    "message": "File uploaded successfully"
-  }
-  ```
-
----
-
 ### Process Summarization
-- **Endpoint:** `POST /summarize/{file_id}`
+- **Endpoint:** `POST /summarize`
 - **Description:** Starts the summarization process for an uploaded file.
 - **Headers:**
   ```http
@@ -99,7 +78,7 @@ The summarization service leverages Gemini to extract key points, making it idea
   ```json
   {
     "file_id": "abc123",
-    "status": "processing"
+    "gcs_path": "/summary"
   }
   ```
 
@@ -112,20 +91,11 @@ The summarization service leverages Gemini to extract key points, making it idea
   ```http
   Authorization: Bearer {access_token}
   ```
-- **Response (If Ready):**
+- **Response:**
   ```json
   {
     "file_id": "abc123",
-    "status": "completed",
     "summary": "This is a summarized version of the document..."
-  }
-  ```
-- **Response (If Still Processing):**
-  ```json
-  {
-    "file_id": "abc123",
-    "status": "processing",
-    "message": "Your summary is still being processed."
   }
   ```
 
