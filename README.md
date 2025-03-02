@@ -61,14 +61,15 @@ The summarization service leverages Gemini to extract key points, making it idea
   - `200 OK` → Success  
   - `400 Bad Request` → Invalid Request  
   - `401 Unauthorized` → Authentication Required  
-  - `403 Forbidden` → Insufficient Permission  
+  - `403 Forbidden` → Insufficient Permission
+  - `422 Validation error` → Insufficient Entity  
   - `500 Internal Server Error` → Unexpected Error  
 
 ---
 
 ## API Endpoints
 ### Process Summarization
-- **Endpoint:** `POST /summarize`
+- **Endpoint:** `POST /summary/summarize`
 - **Description:** Starts the summarization process for an uploaded file.
 - **Headers:**
   ```http
@@ -77,7 +78,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 - **Response:**
   ```json
   {
-    "file_id": "abc123",
+    "summary": "This is a summarized version of the document...",
     "gcs_path": "/summary"
   }
   ```
@@ -94,28 +95,23 @@ The summarization service leverages Gemini to extract key points, making it idea
 - **Response:**
   ```json
   {
-    "file_id": "abc123",
     "summary": "This is a summarized version of the document..."
   }
   ```
 
 ---
 
-### Download as PDF, TXT, or DOCX
+### Download summary
 - **Endpoint:** `GET /summary/{file_id}/download`
-- **Description:** Allows users to download the summary in different formats.
+- **Description:** Allows users to download the summary.
 - **Headers:**
   ```http
   Authorization: Bearer {access_token}
   ```
-- **Query Params:**
-  ```
-  format = "pdf" | "txt" | "docx"
-  ```
 - **Response:**
   ```
-  Content-Disposition: attachment; filename="summary.pdf"
-  Content-Type: application/pdf
+  Content-Disposition: attachment; filename="summary.txt"
+  Content-Type: text/plain
   ```
 
 ---
@@ -129,23 +125,14 @@ The summarization service leverages Gemini to extract key points, making it idea
   ```
 - **Response:**
   ```json
+    [
   {
-    "user_id": "user_789",
-    "history": [
-      {
-        "file_id": "abc123",
-        "filename": "report.pdf",
-        "date": "2025-02-21",
-        "status": "completed"
-      },
-      {
-        "file_id": "xyz456",
-        "filename": "thesis.txt",
-        "date": "2025-02-18",
-        "status": "failed"
-      }
-    ]
+    "id": 1,
+    "filename_hash": "jd2d1jd",
+    "user_id": 1,
+    "filename": "summary.pdf"
   }
+]
   ```
 
 ---
@@ -164,7 +151,8 @@ The summarization service leverages Gemini to extract key points, making it idea
 - **Response:**
   ```json
   {
-    "access_token": "eyJhbGciOiJIUzI1..."
+    "email": "user@example.com",
+    "username": "user@example.com",
   }
   ```
 
@@ -173,7 +161,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 - **Request:**
   ```json
   {
-    "email": "user@example.com",
+    "username": "user@example.com",
     "password": "securepassword"
   }
   ```
@@ -239,5 +227,5 @@ The summarization service leverages Gemini to extract key points, making it idea
 
 
 # Security Measures
-**OAuth2 / Firebase Authentication** for API access.
+OAuth2 Authentication with Bearer token for API access.
 
