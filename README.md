@@ -132,7 +132,7 @@ The summarization service leverages Gemini to extract key points, making it idea
     "user_id": 1,
     "filename": "summary.pdf"
   }
-]
+  ]
   ```
 
 ---
