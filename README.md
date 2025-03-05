@@ -47,7 +47,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 
 ## API Overview
 - **Base URL for backend:** `https://cbts-backend-854061077838.europe-central2.run.app`
-- **Base URL for frontend:** `https://cbts-frontend-git-main-olgas-projects-7552c87b.vercel.app`
+- **Base URL for frontend:** `https://cbts-frontend.vercel.app`
 - **Authentication:** Bearer Token 
 - **Rate Limiting:** Based on user role (Registered, Premium, Enterprise)
 - **Response Format:** JSON (`application/json`)
@@ -221,7 +221,8 @@ OAuth2 Authentication with Bearer token for API access.
 - Scalable (Supports from small databases to terabytes of data, depending on instance size) 
 - Read & Write (Supports both read and write operations, with role-based access control)
 
-## DB scheme 
+## DB diagram 
+<img width="646" alt="db diagram" src="https://github.com/user-attachments/assets/8349a74c-dd8e-432e-8429-d4d6bb13c0f4" />
 
 # Diagram with services and their connections
 # Terraform 
