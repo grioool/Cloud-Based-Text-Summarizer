@@ -21,8 +21,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 * Students
 
 ## Roles of typical users
-* Guest -	Can summarize a limited number of documents per day. No saved history.
-* Registered User -	Stores history and supports file downloads.
+* Registered User -	Can summarize a limited number of documents per day.
 * Premium User - More summarizations.
 * Enterprise User - Highload summarization with prioritization.
 * Admin -	Monitors system performance, API usage, billing and access control.
@@ -42,11 +41,6 @@ The summarization service leverages Gemini to extract key points, making it idea
 6. Stored in GitHub (as submodules - backend + frontend + Terraform)
 7. Diagram - draw.io
 
-## Versions
-1. App that can take pdf and give back summary (Demo version)
-2. App, where user can upload pdf file, summarize it, check summary status, download summary and check history
-3. App, where user can browse scientific files in internet and then get theirs summary
-
 ---
 
 # API design 
@@ -55,7 +49,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 - **Base URL for backend:** `https://cbts-backend-854061077838.europe-central2.run.app`
 - **Base URL for frontend:** `https://cbts-frontend-git-main-olgas-projects-7552c87b.vercel.app`
 - **Authentication:** Bearer Token 
-- **Rate Limiting:** Based on user role (Guest/Registered, Premium, Enterprise)
+- **Rate Limiting:** Based on user role (Registered, Premium, Enterprise)
 - **Response Format:** JSON (`application/json`)
 - **Status Codes:**  
   - `200 OK` → Success  
@@ -117,7 +111,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 ---
 
 ### Get User Summarization History
-- **Endpoint:** `GET /user/history`
+- **Endpoint:** `GET /history`
 - **Description:** Returns a list of processed summaries for a user.
 - **Headers:**
   ```http
@@ -199,11 +193,13 @@ The summarization service leverages Gemini to extract key points, making it idea
   }
   ```
 
+# Security Measures
+OAuth2 Authentication with Bearer token for API access.
 
 ## Rate Limits
 | Plan | Max Number of Summarizations | Max File Size |
 |------|---------------------|--------------|
-| Guest/Registered | 5 | 5MB |
+| Registered | 5 | 5MB |
 | Premium | 50 | 50MB |
 | Enterprise | 200 | 500MB |
 
@@ -225,7 +221,13 @@ The summarization service leverages Gemini to extract key points, making it idea
 - Scalable (Supports from small databases to terabytes of data, depending on instance size) 
 - Read & Write (Supports both read and write operations, with role-based access control)
 
+## DB scheme 
 
-# Security Measures
-OAuth2 Authentication with Bearer token for API access.
+# Diagram with services and their connections
+# Terraform 
+# SLA
+# SLO
+# SLI
+
+
 
