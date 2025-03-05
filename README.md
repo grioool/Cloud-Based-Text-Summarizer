@@ -221,7 +221,7 @@ OAuth2 Authentication with Bearer token for API access.
 - Scalable (Supports from small databases to terabytes of data, depending on instance size) 
 - Read & Write (Supports both read and write operations, with role-based access control)
 
-## DB diagram 
+## PostgreSQL DB diagram 
 <img width="646" alt="db diagram" src="https://github.com/user-attachments/assets/8349a74c-dd8e-432e-8429-d4d6bb13c0f4" />
 
 # Diagram with services and their connections
