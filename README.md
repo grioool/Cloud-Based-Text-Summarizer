@@ -46,8 +46,9 @@ The summarization service leverages Gemini to extract key points, making it idea
 # API design 
 
 ## API Overview
-- **Base URL for backend:** `https://cbts-backend-854061077838.europe-central2.run.app`
+- **Base URL for backend:** `https://cbts-backend-854061077838.europe-central2.run.app/docs`
 - **Base URL for frontend:** `https://cbts-frontend.vercel.app`
+- **Base URL for terraform:** `https://terraform-cbts-backend-854061077838.europe-central2.run.app/docs`
 - **Authentication:** Bearer Token 
 - **Rate Limiting:** Based on user role (Registered, Premium, Enterprise)
 - **Response Format:** JSON (`application/json`)
@@ -56,7 +57,8 @@ The summarization service leverages Gemini to extract key points, making it idea
   - `400 Bad Request` → Invalid Request  
   - `401 Unauthorized` → Authentication Required  
   - `403 Forbidden` → Insufficient Permission
-  - `422 Validation error` → Insufficient Entity  
+  - `422 Validation error` → Insufficient Entity
+  - `429 Rate Limit error` → Too many requests
   - `500 Internal Server Error` → Unexpected Error  
 
 ---
@@ -192,6 +194,26 @@ The summarization service leverages Gemini to extract key points, making it idea
     "active_users": 3500
   }
   ```
+  
+### Subscription with Stripe
+- **Endpoint:** `POST /subscription`
+- **Description:** User subscription - Premium or Enterprise
+- **Headers:**
+  ```http
+  Authorization: Bearer {user_token}
+  ```
+- **Request:**
+  ```json
+  {
+    "subscriptionType": "Premium"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "stripeUrl": ""
+  }
+  ```
 
 # Security Measures
 OAuth2 Authentication with Bearer token for API access.
@@ -222,10 +244,10 @@ OAuth2 Authentication with Bearer token for API access.
 - Read & Write (Supports both read and write operations, with role-based access control)
 
 ## PostgreSQL DB diagram 
-<img width="646" alt="db diagram" src="https://github.com/user-attachments/assets/8349a74c-dd8e-432e-8429-d4d6bb13c0f4" />
+<img width="630" alt="image" src="https://github.com/user-attachments/assets/da872804-6cb5-43f4-8619-ff79ecd598c5" />
+
 
 # Diagram with services and their connections
-# Terraform 
 # SLA
 # SLO
 # SLI
