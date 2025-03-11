@@ -4,6 +4,3 @@
 [submodule "CBTS-backend"]
 	path = CBTS-backend
 	url = https://github.com/grioool/CBTS-backend
-[submodule "CBTS-terraform"]
-	path = CBTS-terraform
-	url = https://github.com/grioool/CBTS-terraform
