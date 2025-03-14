@@ -23,7 +23,7 @@ The summarization service leverages Gemini to extract key points, making it idea
 ## Roles of typical users
 * Registered User -	Can summarize a limited number of documents per day.
 * Premium User - More summarizations.
-* Enterprise User - Highload summarization with prioritization.
+* Enterprise User - Highload summarization (prioritization as future development direction).
 * Admin -	Monitors system performance, API usage, billing and access control.
 
 ## Milestones
