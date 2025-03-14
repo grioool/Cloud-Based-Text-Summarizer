@@ -248,6 +248,10 @@ OAuth2 Authentication with Bearer token for API access.
 
 
 # Diagram with services and their connections
+<img width="1018" alt="Diagram" src="https://github.com/user-attachments/assets/293445d0-e815-4409-abcb-90d22fbae1d2" />
+
+
+
 # SLA
 # SLO
 # SLI
