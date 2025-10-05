@@ -26,12 +26,6 @@ The summarization service leverages Gemini to extract key points, making it idea
 * Enterprise User - Highload summarization (prioritization as future development direction).
 * Admin -	Monitors system performance, API usage, billing and access control.
 
-## Milestones
-* 14.03 M1: Project Submission (brief description, few main features, roles of typical users)
-* 04.04 M2: Project document (diagram, APIs design, Storage chars, Terraform, SLA, SLO, SLI)
-* 04.04 M2: Presentation of the plan
-* 30.05 M3: Final presentation + live demo
-
 ## Technologies
 1. Backend – Python - Google Cloud
 2. Frontend - React - Vercel
